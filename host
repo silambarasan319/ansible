@@ -1,7 +1,12 @@
+#Enter you host's IPs
+192.168.1.10
+192.168.1.20
+
+#host's group name
 [server]
 192.168.1.10
 [client]
 192.168.1.20
-[windsows]
+[windows]
 192.168.1.5
 
