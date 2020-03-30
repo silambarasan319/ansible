@@ -1,0 +1,17 @@
+---
+ - name: Installing editior
+   hosts: server
+   tasks:
+     - name: Installing vim editor on server
+       yum: name=vim state=latest
+       when: ansible_distribution== 'CentOS'
+
+ - name: Installing E-links on client
+   hosts: client
+   tasks: 
+     - name: E-links on centos-7 client machine
+       yum: name=elinks state=latest
+       when: ansible_distribution== 'CentOS'
+
+
+ 
