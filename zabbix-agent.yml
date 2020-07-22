@@ -1,0 +1,49 @@
+---
+ - name: Zabbix agent Installation via Ansible
+   hosts: all
+   tasks:
+
+     - name: Uninstall Previous Versions
+       yum: name=zabbix-agent state=absent
+     - name: Install epel repo
+       yum: name=epel-release state=latest
+     - name: Install zabbix repo
+       yum:
+         name: https://repo.zabbix.com/zabbix/5.0/rhel/7/x86_64/zabbix-release-5.0-1.el7.noarch.rpm
+         state: present
+     - name: Clean All
+       shell: yum clean all
+     - name: Installing Zabbix Agent 5.x
+       yum: name=zabbix-agent state=present
+       tags:
+       - agent
+     - name: Start Zabbix-Agent
+       service: name=zabbix-agent state=started
+     - name: Enable Zabbix-Agent
+       service: name=zabbix-agent enabled=yes
+     - name: Create agent server
+       lineinfile:
+         dest: /etc/zabbix/zabbix_agentd.conf
+         regexp: ^Server=.*
+         insertafter: ^# Server=
+         line: Server=192.168.43.65
+       tags:
+       - server
+     - name: Create agent server
+       lineinfile:
+         dest: /etc/zabbix/zabbix_agentd.conf
+         regexp: ^ServerActive=.*
+         insertafter: ^# ServerActive=
+         line: ServerActive=192.168.43.65
+       tags:
+       - serveractive
+     - name: Download service_monitoring_via_systemctl.conf
+       get_url:
+          url:  https://raw.githubusercontent.com/catonrug/zabbix_agentd.d/master/service_monitoring_via_systemctl.conf
+          dest: /etc/zabbix/zabbix_agentd.d
+       tags:
+       - conf
+     - name: Restart zabbix-agent
+       service:
+          name: zabbix-agent
+          state: restarted
