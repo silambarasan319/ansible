@@ -1,0 +1,28 @@
+https://www.linuxtechi.com/manage-windows-host-using-ansible/
+              (or)
+Step: 1              
+sudo yum install python-pip -y
+pip install pywinrm -y
+
+ansible --version
+ansible localhost -m ping
+
+vi /etc/ansible/hosts
+[windows]
+192.168.43.230
+
+[windows:vars]
+ansible_user=silambarasan
+ansible_password=redhat
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+
+ pip install pywinrm -y
+ #Download the WinRM script on Windows 10 host
+ #Open Power shell exe this command. 
+ https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+ 
+ .\ConfigureRemotingForAnsible.ps1
+ 
+ 
+ 
